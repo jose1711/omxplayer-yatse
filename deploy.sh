@@ -84,3 +84,6 @@ egrep -q '^ *FONT=ter-u32n' /etc/rc.conf || {
 
 # clear package cache 
 xbps-remove -Oo
+
+# disable fsck on boot
+sed -i '/^[[:space:]]*[^#]/s/\(.*\)[[:space:]][[:space:]]*[0-9][0-9]*[[:space:]][[:space:]]*[0-9][0-9]*/\1 0 0/' /etc/fstab
