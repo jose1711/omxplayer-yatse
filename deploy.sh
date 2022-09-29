@@ -1,6 +1,5 @@
 #!/bin/bash
 # set -x
-# install prerequisites
 user="CONFIGUREME"
 
 if [ $(id -u) -ne 0 ]
@@ -29,6 +28,7 @@ chsh -s /bin/bash "${user}"
 install -o "${user}" -m755 -d /home/${user}/videos
 ln -sf /media /home/${user}/videos/media
 
+# install prerequisites
 xbps-install -yu tmux \
                  omxplayer \
                  udevil \
