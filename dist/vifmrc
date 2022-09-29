@@ -6,4 +6,5 @@ command! playSTRETCH
  \ :! ~/bin/omxplayer.sh %c --aspect-mode stretch
 command! playFILL
  \ :! ~/bin/omxplayer.sh %c --aspect-mode fill
-
+command! quitMenu
+ \ :
