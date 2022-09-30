@@ -1,5 +1,5 @@
 only
-filetype *.avi,*.mkv,*.m4v ~/bin/omxplayer.sh
+filetype *.avi,*.mkv,*.m4v,*.mp4 ~/bin/omxplayer.sh
 nnoremap <f2> :command<cr>
 
 command! playSTRETCH
