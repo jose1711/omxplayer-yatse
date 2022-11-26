@@ -61,6 +61,17 @@ install -o "${user}" -Dm755 dist/omxplayer-yatse.py /home/${user}/bin/omxplayer-
 install -o "${user}" -Dm755 dist/mount_all.sh /home/${user}/bin/mount_all.sh
 sed -i "s/{{user}}/${user}/" /home/${user}/bin/mount_all.sh
 
+# make services work with read-only /
+ln -sf "/run/runit/supervise.omxplayer-yatse" "/home/${user}/service/omxplayer-yatse/supervise"
+
+grep -q '^mkdir /run/runit/supervise.omxplayer-yatse' /etc/runit/core-services/03-filesystems.sh || {
+sed -i '/^msg "Mounting rootfs read-write/i \
+mkdir /run/runit/supervise.omxplayer-yatse && chown '"${user}"' /run/runit/supervise.omxplayer-yatse' \
+      /etc/runit/core-services/03-filesystems.sh; }
+
+# leave "/" mounted as read-only
+sed -i 's%mount -o remount,rw /%mount -o remount,ro /%' /etc/runit/core-services/03-filesystems.sh
+
 # add to sudoers
 cat >/etc/sudoers.d/${user}_nopasswd <<HERE
 ${user} ALL=(ALL:ALL) NOPASSWD: ALL
@@ -74,6 +85,7 @@ grep -q bin/mount_all.sh /etc/rc.local || {
 # https://docs.voidlinux.org/config/services/user-services.html
 install -Dm755 dist/run /etc/sv/runsvdir-${user}/run
 sed -i "s/{{user}}/${user}/" /etc/sv/runsvdir-${user}/run
+ln -sf "/run/runit/supervise.runsvdir-${user}" "/etc/sv/runsvdir-${user}/supervise"
 ln -sf "/etc/sv/runsvdir-${user}" /var/service
 
 # set terminal font
