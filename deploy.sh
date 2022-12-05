@@ -26,7 +26,7 @@ chsh -s /bin/bash root
 chsh -s /bin/bash "${user}"
 
 install -o "${user}" -m755 -d /home/${user}/videos
-ln -sf /media /home/${user}/videos/media
+ln -sf /run/media/${user} /home/${user}/videos/media
 
 # install prerequisites
 xbps-install -yu tmux \
@@ -38,6 +38,9 @@ xbps-install -yu tmux \
                  python3-requests \
                  python3-dbus \
                  terminus-font
+
+# copy udevil configuration
+install -Dm644 dist/udevil.conf /etc/udevil/udevil.conf
 
 # configure autologin
 # (https://dudik.github.io/posts/void-linux-agetty-login-without-username-just-password.html)
